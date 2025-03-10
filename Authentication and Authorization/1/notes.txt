@@ -1,0 +1,79 @@
+Q1)how to set cookies
+Ans. const express = require('express');
+const app = express();
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+
+
+app.get('/', (req, res) => {
+    res.cookie("name","shreyas");
+    res.send("Cookie done");
+})
+
+app.get('/read', (req, res) => {
+    console.log(req.cookies);
+    res.send("read page");
+})
+
+app.listen(3000);
+- Every time we visit any route (name=shreyas) will go with it and we wont have to always  set it manually
+
+Q2) bcrypt encryption and decryption
+Ans. Encryption:
+const express = require('express');
+const app = express();
+const bcyrpt = require('bcrypt');
+
+app.get('/', (req, res) => {
+    bcyrpt.genSalt(10, (err, salt) => {
+        bcyrpt.hash('1234', salt, (err, hash) => {
+            console.log(hash);
+            
+        });
+    });
+})
+
+Decryption:
+Password - 1234
+$2b$10$KmGAPC41PRVyiIhc/oCxcOiQcIVEIdI17iphfh7.rWEd1MA3NE/2K
+$2b$10$jXDGeR58URFo..Cd5duhXeuxPT0U3mbfb1/hybDYLdpd.yCgmxVzK
+
+const express = require('express');
+const app = express();
+const bcyrpt = require('bcrypt');
+
+
+app.get('/', (req, res) => {
+    bcyrpt.compare('1234', '$2b$10$KmGAPC41PRVyiIhc/oCxcOiQcIVEIdI17iphfh7.rWEd1MA3NE/2K',(err, result) => {
+        console.log(result);
+    }) 
+  res.send("hello")      
+})
+app.listen(3000);
+
+Q) Hashing the password and decrypting it.
+Ans. const express = require('express');
+const app = express();
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+app.get('/', (req, res) => {
+    const token = jwt.sign({email:"shreyas@gmail.com"},"secret");
+    res.cookie("token",token);
+    res.send("hello")   
+})
+
+app.get('/read', (req, res) => {
+    console.log(req.cookies.token);
+});
+
+app.get('/verify', (req, res) => {
+    let data = jwt.verify(req.cookies.token, "secret");
+    console.log(data);
+    
+});
+
+app.listen(3000);
+

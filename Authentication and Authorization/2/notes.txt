@@ -1,0 +1,10 @@
+here we did following things:
+
+create user accounts:
+1. mongoose setup
+2. schema
+3. model
+4. usercreate -> password -> hash
+5. jwt token -> cookie
+
+Login part-> take user token -> decrypt it -> on the basis of email
